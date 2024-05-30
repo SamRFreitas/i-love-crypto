@@ -1,10 +1,63 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <Loading v-if="state.loading.coins" />
+  <router-view  v-else />
 </template>
+
+<script setup>
+import {reactive, onBeforeMount} from 'vue'
+import { useStore } from 'vuex'
+import Loading from './views/Loading.vue'
+import services from './services'
+
+const state = reactive({
+    loading: {
+      coins: false
+    }
+})
+
+const store = useStore()
+
+onBeforeMount(async () => {
+
+  state.loading.coins = true
+
+  if (checkIfStoreCoinsIsEmpty()) {
+
+    const usedCoins = store.getters.getUsedCoins
+
+    const coinsFromCoinGecko = await services.coingeckoApi.fetchCoinList()
+
+    const coinsToStore = coinsFromCoinGecko.filter(coin => usedCoins.includes(coin.id))
+
+    store.commit('SET_COINS', coinsToStore)
+
+    const coins = store.getters.getCoins
+
+    console.log('DEPOIS DE PREENCHER')
+    console.log(coins)
+  }
+
+  state.loading.coins = false
+
+})
+
+function checkIfStoreCoinsIsEmpty() {
+
+  const coins = store.getters.getCoins
+
+  if (coins.length == 0) {
+    console.log('VAZIO')
+    console.log(coins)
+    return true
+  }
+
+  console.log('VAZIO')
+  console.log(coins)
+  return false
+
+}
+
+</script>
 
 <style>
 #app {
