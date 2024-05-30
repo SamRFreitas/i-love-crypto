@@ -1,5 +1,13 @@
 export default (api) => ({
 
+    fetchCoinList: async () => {
+
+        const response = await api.get('/coins/list')
+
+        return response.data
+
+    },
+
     fetchSimplePrice: async ({cryptoID, currencyForCryptoValue}) => {
         
         const queryParams = {
@@ -29,6 +37,6 @@ export default (api) => ({
 
         console.log(response)
 
-    }
+    },
 
 })
