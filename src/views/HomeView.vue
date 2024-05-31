@@ -1,12 +1,24 @@
 <template>
 
-    <div class="flex flex-row justify-center items-center w-full h-screen">
+    <label class="block text-3xl font-medium leading-6 text-gray-900 mt-12 text-primary"> I Love Crypto </label>
 
-      <form @submit.prevent="tryToFetchHistoricalPrice" class="bg-white h-60 flex flex-col space-y-6">
+
+    <div class="grid grid-cols-4 gap-4 mt-12 w-full flex justify-center px-12">
+
+        <!-- {{state.coins[0]}} -->
+        <CoinCard :coin="state.coins[0]" />
+
+        <!-- <CoinCard v-for="coin in state.coins" :key="coin.id" :coin="coin"/> -->
+
+    </div>
+
+    <div class="flex flex-col justify-center items-center w-full h-screen">     
+
+      <form @submit.prevent="tryToFetchHistoricalPrice" class="w-full max-w-xs flex flex-col space-y-6">
 
         <label class="block text-xl font-medium leading-6 text-gray-900"> Historical Price </label>
 
-        <SelectCoin v-model="state.selectedCoin" :disabled="state.loading.historicalPrice" />
+        <SelectCoin :coins="state.coins" v-model="state.selectedCoin" :disabled="state.loading.historicalPrice" />
 
         <div> 
           <label class="block text-sm font-medium leading-6 text-gray-900"> Select Datetime </label>
@@ -20,7 +32,11 @@
           <span v-else>Searh Historical Price</span>
 
         </button>
+
       </form>
+
+      
+      <HistoricalPriceCard v-if="state.historicalPrice" :historicalData="state.historicalData"/>
       
     </div>
    
@@ -30,10 +46,15 @@
 // @ is an alias to /src
 import SelectCoin from '@/components/SelectCoin.vue'
 import {reactive, computed, watch} from 'vue'
-// import services from '@/services'
 import Loader from '@/components/Loader.vue'
+import { useStore } from 'vuex'
+import useDate from '@/assets/composables/useDate'
+import services from '@/services'
+import HistoricalPriceCard from '@/components/HistoricalPriceCard.vue'
+import CoinCard from '@/components/CoinCard.vue'
 
   const state = reactive({
+    coins: null,
     selectedCoin: null,
     datetime: null,
     errors: {
@@ -42,28 +63,36 @@ import Loader from '@/components/Loader.vue'
         message: 'Empty Datetime - Please, select a datetime'
       }
     },
+    historicalPrice: null,
     loading: {
       historicalPrice: false
+    },
+    historicalData: {
+      coin: null,
+      price: null,
+      datetime: null,
     }
   })
+
+  const store = useStore()
+
+  state.coins = store.getters.getCoins
+
+  state.selectedCoin = state.coins[0]
 
   const datePickerIsDisabled = computed(() => {
     return state.loading.historicalPrice
   })
 
   watch(() => state.datetime, (newValue) => {
-    
-    console.log(state.datetime)
+
     if (newValue != null) {
       state.errors.dateTimeError.empty = false
     }
 
   })
 
-  console.log(state.datetime)
-  console.log(state.errors.dateTimeError.empty || state.loading.historicalPrice)
-
-  const tryToFetchHistoricalPrice = () => {
+  const tryToFetchHistoricalPrice = async () => {
 
       state.loading.historicalPrice = true
 
@@ -73,8 +102,48 @@ import Loader from '@/components/Loader.vue'
         return
       }
 
-      console.log('DEPOIS')
+      const { range } = useDate(state.datetime)
+      console.log(state.selectedCoin)
+
+      await services.coingeckoApi.fetchHistoricalDataWithTimeRange({ cryptoID: state.selectedCoin.id, currencyForCryptoValue: 'usd', range  })
+        .then(response => {
+
+            if (response.status === 200) {
+
+              console.log('200')
+              console.log(response.data.prices)
+              state.historicalPrice = response.data.prices[0][1]
+              console.log(state.historicalPrice)
+              console.log(state.selectedCoin)
+              state.historicalData.coin =  state.selectedCoin
+              state.historicalData.price = state.historicalPrice
+              state.historicalData.datetime = state.datetime
+
+            }
+
+            
+        }).catch(error => {
+
+          if (error.response) {
+
+            console.error('Erro na resposta:', error.response.status)
+
+          } else if (error.request) {
+
+            console.error('Erro na requisição:', error.request)
+
+          } else {
+
+            console.error('Erro ao configurar a requisição:', error.message)
+
+          }
+
+        })
       
+        state.loading.historicalPrice = false
+
   }
+
+  
  
 </script>
