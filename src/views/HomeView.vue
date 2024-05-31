@@ -28,8 +28,10 @@
 
         </form>
 
-        <HistoricalPriceCard v-if="state.historicalPrice" :historicalData="state.historicalData" />
-  
+        <HistoricalPriceCard v-if="state.historicalPrice && !state.errors.fetchHistoricalPriceError.hasError" :historicalData="state.historicalData" />
+
+        <TimeLine v-if="state.errors.fetchHistoricalPriceError.hasError" :label="state.errors.fetchHistoricalPriceError.message" />
+
     </div>
 
 </template>
@@ -45,6 +47,7 @@ import services from '@/services'
 import HistoricalPriceCard from '@/components/HistoricalPriceCard.vue'
 import CoinCard from '@/components/CoinCard.vue'
 import useCurrency from '@/composables/useCurrency'
+import TimeLine from '@/components/TimeLine.vue'
 
 const state = reactive({
     coins: null,
@@ -55,6 +58,10 @@ const state = reactive({
             empty: false,
             message: 'Empty Datetime - Please, select a datetime',
         },
+        fetchHistoricalPriceError: {
+            hasError: false,
+            message: 'Too Many Requests - Please wait 1 minute and try again',
+        }
     },
     historicalPrice: null,
     loading: {
@@ -88,6 +95,7 @@ watch(
 )
 
 const tryToFetchHistoricalPrice = async () => {
+    state.errors.fetchHistoricalPriceError.hasError = false
     state.loading.historicalPrice = true
 
     if (state.datetime == null) {
@@ -97,41 +105,23 @@ const tryToFetchHistoricalPrice = async () => {
     }
 
     const { range } = useDate(state.datetime)
-    console.log(state.selectedCoin)
 
 
-            try {
-                const response = await services.coingeckoApi
-                .fetchHistoricalDataWithTimeRange({ cryptoID: state.selectedCoin.id, currencyForCryptoValue: 'usd', range })
-                console.log('200')
-                console.log(response.data.prices)
-                state.historicalPrice = response.data.prices[0][1]
-                console.log(state.historicalPrice)
-                console.log(state.selectedCoin)
-                state.historicalData.coin = state.selectedCoin
-                state.historicalData.price = formatCryptoValueIn('usd', state.historicalPrice)
-                state.historicalData.datetime = state.datetime
-            } catch (error) {
-                console.log('ERROR')
-                console.log('ERROR')
-                console.log('ERROR')
-                console.log('ERROR')
-                console.log('ERROR')
-                
-                if (error.response && error.response.status === 429) {
-                    // Too Many Requests error, wait for a while before trying again
-                    await new Promise((resolve) => setTimeout(resolve, 5000)) // Wait for 5 seconds
-                    // fetchPrice() // Try again
-                } else {
-                    console.error('An error occurred:', error)
-                    state.loading.price = false
-                }
+    try {
+        const response = await services.coingeckoApi
+        .fetchHistoricalDataWithTimeRange({ cryptoID: state.selectedCoin.id, currencyForCryptoValue: 'usd', range })
+        state.historicalPrice = response.data.prices[0][1]
+        state.historicalData.coin = state.selectedCoin
+        state.historicalData.price = formatCryptoValueIn('usd', state.historicalPrice)
+        state.historicalData.datetime = state.datetime
+    } catch (error) {
 
-            }
+        console.log('ERROR - HOME VIEW')
+        console.log(error)
 
-            
-  
-    
+        state.errors.fetchHistoricalPriceError.hasError = true
+
+    }
 
     state.loading.historicalPrice = false
 }
