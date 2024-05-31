@@ -29,6 +29,8 @@ const fetchCoins = async () => {
         try {
             
             coinsFromCoinGecko = await services.coingeckoApi.fetchCoinList()
+
+            const usedCoins = store.getters.getUsedCoins
             
             const coinsToStore = coinsFromCoinGecko.filter((coin) => usedCoins.includes(coin.id))
 
@@ -39,15 +41,17 @@ const fetchCoins = async () => {
             console.log('DEPOIS DE PREENCHER')
             console.log(coins)
 
+            state.loading.coins = false
+
         } catch (e) {
             console.log(e)
         }
 
+    } else {
+        state.loading.coins = false
     }
 
-    const usedCoins = store.getters.getUsedCoins
-
-    state.loading.coins = false
+    
 }
 
 onBeforeMount(fetchCoins)
