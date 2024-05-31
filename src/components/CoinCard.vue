@@ -19,7 +19,7 @@
         </div>
         
     </div>
-    
+
 </template>
 
 <script setup>
@@ -27,7 +27,7 @@ import { defineProps, reactive, onBeforeMount, onMounted, onUnmounted } from 'vu
 import CoinImage from '@/components/CoinImage.vue'
 import services from '@/services'
 import useCurrency from '@/composables/useCurrency'
-
+import { useStore } from 'vuex'
 const props = defineProps({
     coin: { type: Object, required: true },
 })
@@ -38,7 +38,7 @@ const state = reactive({
         price: false,
     },
 })
-
+const store = useStore()
 const { formatCryptoValueIn } = useCurrency()
 
 const fetchPrice = async () => {
@@ -59,6 +59,8 @@ const fetchPrice = async () => {
             console.log('ERRO')
         }
 
+        store.commit('SET_PRICE', { symbol: props.coin.symbol.toUpperCase(), price: state.price })
+
         state.loading.price = false
                 
     } catch (error) {
@@ -68,6 +70,11 @@ const fetchPrice = async () => {
         console.log('ERROR COIN CARD')
         console.log('ERROR COIN CARD')
         console.log('ERROR COIN CARD')
+        console.log()
+    
+        state.price = store.getters.getPriceBySymbol(props.coin.symbol.toUpperCase()).price
+
+        console.log(state.price)
 
         if (error.response && error.response.status === 429) {
             console.log('error 429 FDP')
