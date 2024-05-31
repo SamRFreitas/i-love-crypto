@@ -4,6 +4,7 @@ export default createStore({
     state: {
         usedCoins: ['bitcoin', 'dacxi', 'ethereum', 'cosmos'],
         coins: [],
+        prices: []
     },
     getters: {
         getUsedCoins: (state) => {
@@ -27,12 +28,29 @@ export default createStore({
         getCoinById: (state) => (id) => {
             return state.coins.find((coin) => coin.id === id)
         },
+        getPriceBySymbol: (state) => (symbol) => {
+
+            if (state.prices.length === 0) {
+                const storedPrices = localStorage.getItem('prices')
+                if (storedPrices) {
+                    state.prices = JSON.parse(storedPrices)
+                }
+            }
+
+            const price = state.prices.find((price) => price.symbol === symbol)
+
+            return price
+        },
     },
     mutations: {
         SET_COINS(state, coins) {
             state.coins = coins
             localStorage.setItem('coins', JSON.stringify(coins))
         },
+        SET_PRICE(state, price) {
+            state.prices.push(price)
+            localStorage.setItem('prices', JSON.stringify(state.prices))
+          },
     },
     actions: {},
     modules: {},
