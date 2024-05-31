@@ -19,6 +19,8 @@ export default (api) => ({
 
         console.log(response)
 
+        return response
+
     },
 
     fetchHistoricalDataWithTimeRange: async ({cryptoID, currencyForCryptoValue, range}) => {
@@ -33,9 +35,12 @@ export default (api) => ({
             to: `&to=${range.to}`
         }
 
+        console.log(`'alow'`)
+        console.log(`/coins/${pathParams.id}/market_chart/range?${queryParams.vs_currencies}${queryParams.from}${queryParams.to}`)
         const response = await api.get(`/coins/${pathParams.id}/market_chart/range?${queryParams.vs_currencies}${queryParams.from}${queryParams.to}`)
+        // const response = await api.get(`/coins/${pathParams.id}/market_chart/range?${queryParams.vs_currencies}&from=1717104240&to=1717104360`)
 
-        console.log(response)
+        return response
 
     },
 
