@@ -10,7 +10,19 @@ export default createStore({
             return state.usedCoins
         },
         getCoins: (state) => {
+
+            if (state.coins.length === 0) {
+
+                const storedCoins = localStorage.getItem('coins')
+
+                if (storedCoins) {
+                    state.coins = JSON.parse(storedCoins)
+                }
+
+            }
+
             return state.coins
+            
         },
         getCoinById: (state) => (id) => {
             return state.coins.find((coin) => coin.id === id)
