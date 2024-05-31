@@ -36,19 +36,12 @@ const fetchCoins = async () => {
 
             store.commit('SET_COINS', coinsToStore)
 
-            const coins = store.getters.getCoins
-
-            console.log('DEPOIS DE PREENCHER')
-            console.log(coins)
-
             state.loading.coins = false
 
         } catch (e) {
-            console.log('DEU RUIM NO APP')
-            console.log('DEU RUIM NO APP')
-            console.log('DEU RUIM NO APP')
-            console.log('DEU RUIM NO APP')
+
             fetchCoins()
+
         }
 
     } else {
