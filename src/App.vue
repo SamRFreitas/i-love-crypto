@@ -20,73 +20,34 @@ const store = useStore()
 onBeforeMount(async () => {
     state.loading.coins = true
 
-    if (checkIfStoreCoinsIsEmpty()) {
-        const usedCoins = store.getters.getUsedCoins
+    const fetchData = async () => {
 
-        const coinsFromCoinGecko = await services.coingeckoApi.fetchCoinList()
-
-        const coinsToStore = coinsFromCoinGecko.filter((coin) => usedCoins.includes(coin.id))
-
-        store.commit('SET_COINS', coinsToStore)
-
-        const coins = store.getters.getCoins
-
-        console.log('DEPOIS DE PREENCHER')
-        console.log(coins)
-
-        const storedValue = localStorage.getItem('coins')
-        if (storedValue) {
-            console.log('storedValue')
-            console.log(storedValue)
-            // return JSON.parse(storedValue)
-        } else {
-            console.log('Set Items')
-            localStorage.setItem('coins', JSON.stringify(coins))
-            // return defaultValue
+        try {
+            const usedCoins = store.getters.getUsedCoins
+            const coinsFromCoinGecko = await services.coingeckoApi.fetchCoinList()
+            const coinsToStore = coinsFromCoinGecko.filter((coin) => usedCoins.includes(coin.id))
+            store.commit('SET_COINS', coinsToStore)
+            localStorage.setItem('coins', JSON.stringify(coinsToStore))
+            state.loading.coins = false
+        } catch (e) {
+            console.error('Error fetching coins:', e.message)
+            // Tentar novamente até 3 vezes
+            if (state.retryAttempts < 3) {
+                state.retryAttempts++
+                setTimeout(fetchData, 60000) // Tentar novamente após 1 minuto
+            } else {
+                state.loading.coins = false
+                console.error('Failed to fetch coins after 3 attempts')
+            }
         }
-
-        const teste = localStorage.getItem('coins')
-        console.log('ISSO E UM TESTE')
-        console.log(teste)
+        
     }
 
-    state.loading.coins = false
+    state.retryAttempts = 0
+    fetchData() // Chamada inicial ao serviço
 })
-
-function checkIfStoreCoinsIsEmpty() {
-    const coins = store.getters.getCoins
-
-    if (coins.length == 0) {
-        // console.log('VAZIO')
-        // console.log(coins)
-        return true
-    }
-
-    // console.log('VAZIO')
-    // console.log(coins)
-    return false
-}
 </script>
 
 <style>
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-}
-
-nav {
-    padding: 30px;
-}
-
-nav a {
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-    color: #42b983;
-}
+/* Your styles here */
 </style>
