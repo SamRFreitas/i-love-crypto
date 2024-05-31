@@ -1,12 +1,12 @@
 export default (datetime) => {
     const formatDateTimeToUNIXTimestamp = () => {
-        console.log(datetime)
 
         const date = new Date(datetime)
 
         const unixTimeSeconds = Math.floor(date.getTime() / 1000)
 
         return unixTimeSeconds
+
     }
 
     const add1HourTimeIntervalToUnixTimeSeconds = () => {
@@ -14,7 +14,6 @@ export default (datetime) => {
     }
 
     const formatDate = (datetimeToFormat) => {
-        console.log(datetimeToFormat)
 
         const date = new Date(datetimeToFormat)
         const day = date.getDate().toString().padStart(2, '0')
@@ -24,8 +23,9 @@ export default (datetime) => {
         const minutes = date.getMinutes().toString().padStart(2, '0')
 
         const formatedDate = `${month}/${day}/${year}, ${hours}:${minutes}`
-        console.log(formatedDate)
+   
         return formatedDate
+        
     }
 
     const unixTimeSeconds = formatDateTimeToUNIXTimestamp(datetime)

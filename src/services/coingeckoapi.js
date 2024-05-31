@@ -13,8 +13,6 @@ export default (api) => ({
 
         const response = await api.get(`/simple/price?${queryParams.ids}${queryParams.vs_currencies}`)
 
-        console.log(response)
-
         return response
     },
 
@@ -28,11 +26,8 @@ export default (api) => ({
             from: `&from=${range.from}`,
             to: `&to=${range.to}`,
         }
-
-        console.log(`'alow'`)
-        console.log(`/coins/${pathParams.id}/market_chart/range?${queryParams.vs_currencies}${queryParams.from}${queryParams.to}`)
+        
         const response = await api.get(`/coins/${pathParams.id}/market_chart/range?${queryParams.vs_currencies}${queryParams.from}${queryParams.to}`)
-        // const response = await api.get(`/coins/${pathParams.id}/market_chart/range?${queryParams.vs_currencies}&from=1717104240&to=1717104360`)
 
         return response
     },
