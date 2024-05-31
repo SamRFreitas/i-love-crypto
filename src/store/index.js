@@ -31,6 +31,7 @@ export default createStore({
     mutations: {
         SET_COINS(state, coins) {
             state.coins = coins
+            localStorage.setItem('coins', JSON.stringify(coins))
         },
     },
     actions: {},
