@@ -49,8 +49,8 @@ const fetchPrice = async () => {
 
     state.loading.price = true
 
-    await services.coingeckoApi.fetchSimplePrice({ cryptoID: props.coin.id, currencyForCryptoValue: 'usd' }).then((response) => {
-
+    try {
+        const response = await services.coingeckoApi.fetchSimplePrice({ cryptoID: props.coin.id, currencyForCryptoValue: 'usd' })
         const unformattedPrice = response.data[`${props.coin.id}`]['usd']
 
         const digits = props.coin.id == 'dacxi' ? 8 : 2
@@ -62,8 +62,27 @@ const fetchPrice = async () => {
         }
 
         state.loading.price = false
+                
+    } catch (error) {
+
+        console.log('ERROR COIN CARD')
+        console.log('ERROR COIN CARD')
+        console.log('ERROR COIN CARD')
+        console.log('ERROR COIN CARD')
+        console.log('ERROR COIN CARD')
+
+        if (error.response && error.response.status === 429) {
+            console.log('error 429 FDP')
+            // Too Many Requests error, wait for a while before trying again
+            // await new Promise((resolve) => setTimeout(resolve, 5000)) // Wait for 5 seconds
+            // fetchPrice() // Try again
+        } else {
+            console.error('An error occurred:', error.message)
+            state.loading.price = false
+        }
+
     }
-)
+
 }
 
 onBeforeMount(fetchPrice)
