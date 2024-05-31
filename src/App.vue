@@ -35,6 +35,21 @@ onBeforeMount(async () => {
 
     console.log('DEPOIS DE PREENCHER')
     console.log(coins)
+
+    const storedValue = localStorage.getItem('coins')
+    if (storedValue) {
+      console.log('storedValue')
+      console.log(storedValue)
+      // return JSON.parse(storedValue)
+    } else {
+      console.log('Set Items')
+      localStorage.setItem('coins', JSON.stringify(coins))
+      // return defaultValue
+    }
+
+    const teste = localStorage.getItem('coins')
+    console.log('ISSO E UM TESTE')
+    console.log(teste)
   }
 
   state.loading.coins = false
@@ -46,13 +61,13 @@ function checkIfStoreCoinsIsEmpty() {
   const coins = store.getters.getCoins
 
   if (coins.length == 0) {
-    console.log('VAZIO')
-    console.log(coins)
+    // console.log('VAZIO')
+    // console.log(coins)
     return true
   }
 
-  console.log('VAZIO')
-  console.log(coins)
+  // console.log('VAZIO')
+  // console.log(coins)
   return false
 
 }
