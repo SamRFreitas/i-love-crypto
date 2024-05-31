@@ -18,16 +18,17 @@
 
         <div class="flex flex-row justify-between w-full">
             <label class="block text-md font-medium leading-6 text-gray-900">{{ props.coin.symbol.toUpperCase() }}</label>
-            <label class="block text-md font-medium leading-6 text-gray-900">$ {{ state.price }}</label>
+            <label class="block text-md font-medium leading-6 text-gray-900"> {{ state.price }}</label>
         </div>
         
     </div>
 </template>
 
 <script setup>
-import { defineProps, reactive, onBeforeMount } from 'vue'
+import { defineProps, reactive, onBeforeMount, onMounted, onUnmounted } from 'vue'
 import CoinImage from '@/components/CoinImage.vue'
 import services from '@/services'
+import useCurrency from '@/composables/useCurrency'
 
 const props = defineProps({
     coin: { type: Object, required: true },
@@ -40,15 +41,44 @@ const state = reactive({
     },
 })
 
-onBeforeMount(async () => {
+const { formatCryptoValueIn } = useCurrency()
+
+const fetchPrice = async () => {
+
+    console.log('CHAMOU fetchPrice')
+
     state.loading.price = true
 
     await services.coingeckoApi.fetchSimplePrice({ cryptoID: props.coin.id, currencyForCryptoValue: 'usd' }).then((response) => {
-        state.price = response.data
 
-        console.log(state.price)
+        const unformattedPrice = response.data[`${props.coin.id}`]['usd']
+
+        const digits = props.coin.id == 'dacxi' ? 8 : 2
+        state.price = formatCryptoValueIn('usd', unformattedPrice, digits)
+
+        
+        if(!response.data[`${props.coin.id}`]['usd']) {
+            console.log('ERRO')
+        }
 
         state.loading.price = false
-    })
+    }
+)
+}
+
+onBeforeMount(fetchPrice)
+
+let interval
+
+onMounted(() => {
+    setTimeout(() => {
+        interval = setInterval(fetchPrice, 60000) 
+    }, 60000)
 })
+
+onUnmounted(() => {
+    clearInterval(interval)
+})
+
+
 </script>
