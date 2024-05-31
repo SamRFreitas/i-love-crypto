@@ -1,27 +1,25 @@
 <template>
-    <div v-if="state.loading.price" class="w-full max-w-md flex flex-col h-32 justify-center items-center space-y-2 px-4 md:shadow-xl border rounded-md w-full">
-        <div class="animate-pulse flex flex-col items-center space-y-2">
-            <div class="bg-gray-200 h-8 w-8 rounded-full"></div>
 
-            <div class="bg-gray-200 h-4 w-20 rounded"></div>
-
-            <div class="flex flex-row justify-between w-full">
-                <div class="bg-gray-200 h-4 w-28 rounded"></div>
-            </div>
-        </div>
-    </div>
-
-    <div v-else class="w-full max-w-md flex flex-col h-32 justify-center items-center space-y-2 px-4 md:shadow-xl border rounded-md w-full">
+    <div class="w-full max-w-md flex flex-col h-32 justify-center items-center space-y-2 px-4 md:shadow-xl border rounded-md w-full">
+        
         <CoinImage :id="props.coin.id" :width="'w-8'" :height="'h-8'" />
 
         <label class="block text-md font-medium leading-6 text-gray-900">{{ props.coin.name }}</label>
 
-        <div class="flex flex-row justify-between w-full">
+        <div v-if="state.loading.price" class="animate-pulse flex flex-col items-center space-y-2">
+            <div class="flex flex-row justify-center items-cdnter w-full">
+                <div class="bg-gray-200 h-4 w-36 rounded ml-3"></div>
+            </div>
+        </div>
+
+        <div v-else class="flex flex-row justify-between w-full">
             <label class="block text-md font-medium leading-6 text-gray-900">{{ props.coin.symbol.toUpperCase() }}</label>
-            <label class="block text-md font-medium leading-6 text-gray-900"> {{ state.price }}</label>
+        
+            <label  class="block text-md font-medium leading-6 text-gray-900"> {{ state.price }}</label>
         </div>
         
     </div>
+    
 </template>
 
 <script setup>
