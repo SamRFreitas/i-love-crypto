@@ -44,7 +44,11 @@ const fetchCoins = async () => {
             state.loading.coins = false
 
         } catch (e) {
-            console.log(e)
+            console.log('DEU RUIM NO APP')
+            console.log('DEU RUIM NO APP')
+            console.log('DEU RUIM NO APP')
+            console.log('DEU RUIM NO APP')
+            fetchCoins()
         }
 
     } else {
