@@ -100,29 +100,40 @@ const tryToFetchHistoricalPrice = async () => {
     console.log(state.selectedCoin)
 
 
-    try {
-            await services.coingeckoApi
-            .fetchHistoricalDataWithTimeRange({ cryptoID: state.selectedCoin.id, currencyForCryptoValue: 'usd', range })
-            .then((response) => {
-                if (response.status === 200) {
-                    console.log('200')
-                    console.log(response.data.prices)
-                    state.historicalPrice = response.data.prices[0][1]
-                    console.log(state.historicalPrice)
-                    console.log(state.selectedCoin)
-                    state.historicalData.coin = state.selectedCoin
-                    state.historicalData.price = formatCryptoValueIn('usd', state.historicalPrice)
-                    state.historicalData.datetime = state.datetime
+            try {
+                const response = await services.coingeckoApi
+                .fetchHistoricalDataWithTimeRange({ cryptoID: state.selectedCoin.id, currencyForCryptoValue: 'usd', range })
+                console.log('200')
+                console.log(response.data.prices)
+                state.historicalPrice = response.data.prices[0][1]
+                console.log(state.historicalPrice)
+                console.log(state.selectedCoin)
+                state.historicalData.coin = state.selectedCoin
+                state.historicalData.price = formatCryptoValueIn('usd', state.historicalPrice)
+                state.historicalData.datetime = state.datetime
+            } catch (error) {
+                console.log('ERROR')
+                console.log('ERROR')
+                console.log('ERROR')
+                console.log('ERROR')
+                console.log('ERROR')
+                
+                if (error.response && error.response.status === 429) {
+                    // Too Many Requests error, wait for a while before trying again
+                    await new Promise((resolve) => setTimeout(resolve, 5000)) // Wait for 5 seconds
+                    // fetchPrice() // Try again
+                } else {
+                    console.error('An error occurred:', error)
+                    state.loading.price = false
                 }
-            })
-        } catch (e) {
-            
-            console.error('Error fetching coins:', e.message)
-            
-        }
 
+            }
+
+            
+  
     
 
     state.loading.historicalPrice = false
 }
+
 </script>
