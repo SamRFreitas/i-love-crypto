@@ -48,8 +48,14 @@ export default createStore({
             localStorage.setItem('coins', JSON.stringify(coins))
         },
         SET_PRICE(state, price) {
-            state.prices.push(price)
-            localStorage.setItem('prices', JSON.stringify(state.prices))
+
+            if (!state.prices.some(p => p.symbol === price.symbol)) {
+
+                state.prices.push(price)
+                localStorage.setItem('prices', JSON.stringify(state.prices))
+
+            }
+            
           },
     },
     actions: {},
