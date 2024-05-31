@@ -3,11 +3,9 @@
 </template>
 
 <script setup>
-
-    const props = defineProps({
-        id: { type: String, required: true },
-        width: { type: String, default: 'w-5' },
-        height: { type: String, default: 'h-5' },
-    })
-
+const props = defineProps({
+    id: { type: String, required: true },
+    width: { type: String, default: 'w-5' },
+    height: { type: String, default: 'h-5' },
+})
 </script>

@@ -1,9 +1,7 @@
 export default (datetime) => {
-
     const formatDateTimeToUNIXTimestamp = () => {
-    
         console.log(datetime)
-    
+
         const date = new Date(datetime)
 
         const unixTimeSeconds = Math.floor(date.getTime() / 1000)
@@ -12,12 +10,10 @@ export default (datetime) => {
     }
 
     const add1HourTimeIntervalToUnixTimeSeconds = () => {
-
-        return unixTimeSeconds + (60 * 60)
+        return unixTimeSeconds + 60 * 60
     }
 
     const formatDate = (datetimeToFormat) => {
-
         console.log(datetimeToFormat)
 
         const date = new Date(datetimeToFormat)
@@ -31,15 +27,13 @@ export default (datetime) => {
         console.log(formatedDate)
         return formatedDate
     }
-    
 
     const unixTimeSeconds = formatDateTimeToUNIXTimestamp(datetime)
 
     const range = {
         from: unixTimeSeconds,
-        to: add1HourTimeIntervalToUnixTimeSeconds(unixTimeSeconds)
+        to: add1HourTimeIntervalToUnixTimeSeconds(unixTimeSeconds),
     }
 
     return { range, formatDate }
-
 }

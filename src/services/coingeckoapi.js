@@ -1,18 +1,14 @@
 export default (api) => ({
-
     fetchCoinList: async () => {
-
         const response = await api.get('/coins/list')
 
         return response.data
-
     },
 
-    fetchSimplePrice: async ({cryptoID, currencyForCryptoValue}) => {
-        
+    fetchSimplePrice: async ({ cryptoID, currencyForCryptoValue }) => {
         const queryParams = {
             ids: `ids=${cryptoID}`,
-            vs_currencies: `&vs_currencies=${currencyForCryptoValue}`
+            vs_currencies: `&vs_currencies=${currencyForCryptoValue}`,
         }
 
         const response = await api.get(`/simple/price?${queryParams.ids}${queryParams.vs_currencies}`)
@@ -20,19 +16,17 @@ export default (api) => ({
         console.log(response)
 
         return response
-
     },
 
-    fetchHistoricalDataWithTimeRange: async ({cryptoID, currencyForCryptoValue, range}) => {
-        
+    fetchHistoricalDataWithTimeRange: async ({ cryptoID, currencyForCryptoValue, range }) => {
         const pathParams = {
-            id: cryptoID
+            id: cryptoID,
         }
 
         const queryParams = {
             vs_currencies: `vs_currency=${currencyForCryptoValue}`,
             from: `&from=${range.from}`,
-            to: `&to=${range.to}`
+            to: `&to=${range.to}`,
         }
 
         console.log(`'alow'`)
@@ -41,7 +35,5 @@ export default (api) => ({
         // const response = await api.get(`/coins/${pathParams.id}/market_chart/range?${queryParams.vs_currencies}&from=1717104240&to=1717104360`)
 
         return response
-
     },
-
 })
