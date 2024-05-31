@@ -17,37 +17,68 @@ const state = reactive({
 
 const store = useStore()
 
-onBeforeMount(async () => {
+const fetchCoins = async () => {
+
     state.loading.coins = true
 
-    const fetchData = async () => {
+    
+    let coinsFromCoinGecko
+
+    if (checkIfStoreCoinsIsEmpty()) {
 
         try {
-            const usedCoins = store.getters.getUsedCoins
-            const coinsFromCoinGecko = await services.coingeckoApi.fetchCoinList()
+            
+            coinsFromCoinGecko = await services.coingeckoApi.fetchCoinList()
+            
             const coinsToStore = coinsFromCoinGecko.filter((coin) => usedCoins.includes(coin.id))
+
             store.commit('SET_COINS', coinsToStore)
-            localStorage.setItem('coins', JSON.stringify(coinsToStore))
-            state.loading.coins = false
+
+            const coins = store.getters.getCoins
+
+            console.log('DEPOIS DE PREENCHER')
+            console.log(coins)
+
         } catch (e) {
-            console.error('Error fetching coins:', e.message)
-            // Tentar novamente até 3 vezes
-            if (state.retryAttempts < 3) {
-                state.retryAttempts++
-                setTimeout(fetchData, 60000) // Tentar novamente após 1 minuto
-            } else {
-                state.loading.coins = false
-                console.error('Failed to fetch coins after 3 attempts')
-            }
+            console.log(e)
         }
-        
+
     }
 
-    state.retryAttempts = 0
-    fetchData() // Chamada inicial ao serviço
-})
+    const usedCoins = store.getters.getUsedCoins
+
+    state.loading.coins = false
+}
+
+onBeforeMount(fetchCoins)
+
+function checkIfStoreCoinsIsEmpty() {
+    const coins = store.getters.getCoins
+
+    return coins.length === 0
+}
+
 </script>
 
 <style>
-/* Your styles here */
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+}
+
+nav {
+    padding: 30px;
+}
+
+nav a {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+    color: #42b983;
+}
 </style>
