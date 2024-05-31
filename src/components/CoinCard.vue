@@ -61,6 +61,8 @@ const fetchPrice = async () => {
         state.price = store.getters.getPriceBySymbol(props.coin.symbol.toUpperCase()).price
         console.log('COIN CARD')
         console.log(state.price)
+
+        state.loading.price = false
     }
 
 }
