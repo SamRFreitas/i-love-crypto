@@ -23,9 +23,17 @@ jobs:
         run: npm run test
       - run: echo "Tests finished!"
 
-  trigger_webhook:
+  deploy:
     runs-on: ubuntu-latest
     needs: test
+    # if: ${{ needs.test.result == 'success' && github.event_name == 'push' }}
     steps:
-      - name: Trigger Vercel Webhook
-        run: curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_IPxtZHnrPtkXxJMKssIeEXbf0PE5/tlP6fNwAdb
+      - uses: actions/checkout@v3
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
