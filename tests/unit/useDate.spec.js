@@ -3,8 +3,11 @@ import useDate from "@/composables/useDate"
 describe('UseDate - ', () => {
 
     const dateString = '2024-01-01T03:00:00Z'
-    const datetimeMock = new Date(dateString).toISOString()
+    const datetime = new Date(dateString)
+    const datetimeMock = datetime.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' })
 
+    console.log(datetime)
+    console.log(datetimeMock)
     it('range - should have the correct time interval of 1 hour in timestamps', () => {
         
         const { range } = useDate(datetimeMock)
