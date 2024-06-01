@@ -1,6 +1,6 @@
 <template>
 
-    <label class="block text-3xl font-medium leading-6 text-gray-900 mt-12 text-primary text-center"> I Love Crypto </label>
+    <label class="block text-3xl font-medium leading-6 text-gray-900 mt-12 text-primary text-center"> I Love Crypto 2</label>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gt gap-4 mt-12 w-full flex justify-center items-center px-4 md:px-12">
 
