@@ -3,7 +3,7 @@ import useDate from "@/composables/useDate"
 describe('UseDate - ', () => {
 
     const dateString = '2024-01-01T03:00:00Z'
-    const datetimeMock = new Date(dateString)
+    const datetimeMock = new Date(dateString).toISOString()
 
     it('range - should have the correct time interval of 1 hour in timestamps', () => {
         
