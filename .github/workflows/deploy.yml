@@ -22,3 +22,14 @@ jobs:
       - name: Run Tests
         run: npm run test
       - run: echo "Tests finished!"
+
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ needs.test.result == 'success' }}  # Check if the test job was successful
+    steps:
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel_token: ${{ secrets.VERCEL_TOKEN }}
