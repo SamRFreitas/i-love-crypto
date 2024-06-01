@@ -110,11 +110,14 @@ const tryToFetchHistoricalPrice = async () => {
     try {
         const response = await services.coingeckoApi
         .fetchHistoricalDataWithTimeRange({ cryptoID: state.selectedCoin.id, currencyForCryptoValue: 'usd', range })
+
         state.historicalPrice = response.data.prices[0][1]
         state.historicalData.coin = state.selectedCoin
+
         const digits = state.historicalData.coin.id == 'dacxi' ? 8 : 2
         state.historicalData.price = formatCryptoValueIn('usd', state.historicalPrice, digits)
         state.historicalData.datetime = state.datetime
+
     } catch (error) {
 
         console.log(error)
