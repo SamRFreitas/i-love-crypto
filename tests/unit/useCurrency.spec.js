@@ -17,7 +17,7 @@ describe('UseCurrency - ', () => {
         
         const expectedValue = formatCryptoValueIn('usd', amountMock, 5)
 
-        expect(expectedValue).toBe('$ 100.0')
+        expect(expectedValue).toBe('$ 100.00000')
 
     })
 
