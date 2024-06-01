@@ -24,12 +24,14 @@ jobs:
       - run: echo "Tests finished!"
 
   deploy:
-    name: Deploy to Vercel
     runs-on: ubuntu-latest
-    needs: test
-    if: ${{ needs.test.result == 'success' }}  # Check if the test job was successful
     steps:
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel_token: ${{ secrets.VERCEL_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
