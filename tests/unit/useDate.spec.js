@@ -15,11 +15,13 @@ describe('UseDate - ', () => {
         
         const { range } = useDate(datetimeMock)
 
-        const oneHourInterval = 60 * 60
+        // These variables `expectedFrom` and `expectedTo` need to be initialized based on the datetime mock because different machines
+        // could have issues due to different time zones.
+        // This problem arises from GitHub Actions when running the tests and encountering different time zones,
+        // which causes errors in actions.
 
-        // Calcula o timestamp inicial e final
         const expectedFrom = Math.floor(datetimeMock.getTime() / 1000)
-        const expectedTo = expectedFrom + oneHourInterval
+        const expectedTo = expectedFrom + 3600
 
         expect(range.from).toBe(expectedFrom)
 
