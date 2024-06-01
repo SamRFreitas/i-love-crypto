@@ -2,6 +2,8 @@ import useDate from "@/composables/useDate"
 
 describe('UseDate - ', () => {
 
+    process.env.TZ = 'UTC'
+
     const dateString = '2024-01-01T03:00:00Z'
     const datetimeMock = new Date(dateString.toString())
 
