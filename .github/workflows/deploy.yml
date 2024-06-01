@@ -10,7 +10,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@vv
       - run: echo "Testing the project"
       - name: Using Node.js 20.13.1
         uses: actions/setup-node@v3
