@@ -15,9 +15,15 @@ describe('UseDate - ', () => {
         
         const { range } = useDate(datetimeMock)
 
-        expect(range.from).toBe(1704078000)
+        const oneHourInterval = 60 * 60
 
-        expect(range.to).toBe(1704081600)
+        // Calcula o timestamp inicial e final
+        const expectedFrom = Math.floor(datetimeMock.getTime() / 1000)
+        const expectedTo = expectedFrom + oneHourInterval
+
+        expect(range.from).toBe(expectedFrom)
+
+        expect(range.to).toBe(expectedTo)
 
 
     })
