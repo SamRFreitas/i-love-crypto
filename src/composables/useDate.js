@@ -1,5 +1,6 @@
 export default (datetime) => {
-    const formatDateTimeToUNIXTimestamp = () => {
+    
+    const convertDateTimeToUNIXTimestamp = () => {
 
         const date = new Date(datetime)
 
@@ -28,7 +29,7 @@ export default (datetime) => {
         
     }
 
-    const unixTimeSeconds = formatDateTimeToUNIXTimestamp(datetime)
+    const unixTimeSeconds = convertDateTimeToUNIXTimestamp(datetime)
 
     const range = {
         from: unixTimeSeconds,
