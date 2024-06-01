@@ -22,7 +22,7 @@ describe('UseDate - ', () => {
         const { formatDate } = useDate(datetimeMock)
 
         const formattedDate = formatDate(datetimeMock)
-        const expectedDate = '01/01/2024, 00:001'
+        const expectedDate = '01/01/2024, 00:00'
         
 
         expect(formattedDate).toBe(expectedDate)
