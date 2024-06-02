@@ -18,10 +18,10 @@
             <div>
                 <label class="block text-sm font-medium leading-6 text-gray-900"> Select Datetime </label>
                 <VueDatePicker class="mt-2" :class="datePickerIsDisabled ? 'cursor-not-allowed' : ''" v-model="state.datetime" :disabled="datePickerIsDisabled" />
-                <label v-if="state.errors.dateTimeError.empty" class="block text-xs font-medium leading-6 text-red-500 text-start"> {{ state.errors.dateTimeError.message }} </label>
+                <label v-if="state.errors.dateTimeError.hasError" class="block text-xs font-medium leading-6 text-red-500 text-start"> {{ state.errors.dateTimeError.message }} </label>
             </div>
 
-            <button type="submit" class="bg-primary text-white font-bold py-2 px-4 rounded-full flex justify-center" :class="[state.errors.dateTimeError.empty ? 'opacity-50 cursor-not-allowed focus:bg-primary' : '', state.loading.historicalPrice ? 'hover:bg-primary' : 'hover:bg-primary-dark' ]">
+            <button type="submit" class="bg-primary text-white font-bold py-2 px-4 rounded-full flex justify-center" :class="[state.errors.dateTimeError.hasError ? 'opacity-50 cursor-not-allowed focus:bg-primary' : '', state.loading.historicalPrice ? 'hover:bg-primary' : 'hover:bg-primary-dark' ]">
                 <Loader v-if="state.loading.historicalPrice" width="20px" height="20px" top="2px" left="2px" right="2px" bottom="2px" />
                 <span v-else>Searh Historical Price</span>
             </button>
@@ -55,8 +55,8 @@ const state = reactive({
     datetime: null,
     errors: {
         dateTimeError: {
-            empty: false,
-            message: 'Empty Datetime - Please, select a datetime',
+            hasError: false,
+            message: 'Empty Datetime - Please, select a datetime.',
         },
         fetchHistoricalPriceError: {
             hasError: false,
@@ -71,7 +71,7 @@ const state = reactive({
         coin: null,
         price: null,
         datetime: null,
-    },
+    }
 })
 
 const store = useStore()
@@ -89,7 +89,7 @@ watch(
     () => state.datetime,
     (newValue) => {
         if (newValue != null) {
-            state.errors.dateTimeError.empty = false
+            state.errors.dateTimeError.hasError = false
         }
     }
 )
@@ -99,7 +99,10 @@ const tryToFetchHistoricalPrice = async () => {
     state.loading.historicalPrice = true
 
     if (state.datetime == null) {
-        state.errors.dateTimeError.empty = true
+
+        state.errors.dateTimeError.hasError = true
+        state.errors.dateTimeError.message = 'Empty Datetime - Please, select a datetime.'
+        
         state.loading.historicalPrice = false
         return
     }
@@ -110,8 +113,19 @@ const tryToFetchHistoricalPrice = async () => {
     try {
         const response = await services.coingeckoApi
         .fetchHistoricalDataWithTimeRange({ cryptoID: state.selectedCoin.id, currencyForCryptoValue: 'usd', range })
+        
+        if(response.data && response.data.prices.length == 0) {
 
+            state.errors.dateTimeError.hasError = true
+            state.errors.dateTimeError.message = 'Empty Prices - The chosen date does not have available prices. Please select dates before today for past days.'
+            
+            state.loading.historicalPrice = false
+            return 
+        }
+        
         state.historicalPrice = response.data.prices[0][1]
+
+
         state.historicalData.coin = state.selectedCoin
 
         const digits = state.historicalData.coin.id == 'dacxi' ? 8 : 2
