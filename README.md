@@ -63,7 +63,7 @@ Follow these steps to get a copy of the project up and running on your local mac
 
 ## Unit Test 
 
-To run unit tests, you only need to run the command :
+**To run unit tests, you only need to run the command:**
 
 * ```sh
      npm run test
@@ -71,6 +71,23 @@ To run unit tests, you only need to run the command :
 They are very simple tests on the two main and unique composables of the application, which are useCurrency.js, responsible for formatting prices into fiat format, and useDate, used for handling certain date conversions to display a common date string and convert values to a specific format required by CoinGecko.
 
 ## E2E Test
+
+**It's important to have the application running locally because the tests need to access the application's URL. If your local application is not running, the tests will not be executed.**
+
+* ```sh
+     npm run seve
+
+**To run the tests, you can execute the following command:**
+
+* ```sh
+     npx playwright test
+
+One important thing in these tests is that due to the aforementioned limitation of CoinGecko, the CoinGecko calls were mocked. I particularly don't like to mock E2E tests, but since I have no control over the API and there was no way to run the tests, and there are many requests and only 1 test, it was necessary to implement mocks in these calls. These mocks simulate all possibilities of errors and successes, making the E2E test very comprehensive and assertive.
+
+
+
+
+
 
 
 
