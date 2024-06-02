@@ -71,8 +71,8 @@ let interval
 
 onMounted(() => {
     setTimeout(() => {
-        interval = setInterval(fetchPrice, 60000) 
-    }, 60000)
+        interval = setInterval(fetchPrice, 180000) 
+    }, 180000)
 })
 
 onUnmounted(() => {
