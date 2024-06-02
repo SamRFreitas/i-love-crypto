@@ -63,12 +63,14 @@ Follow these steps to get a copy of the project up and running on your local mac
 
 ## Unit Test 
 
-**To run unit tests, you only need to run the command :**
+To run unit tests, you only need to run the command :
 
-```sh
-npm run test
+* ```sh
+     npm run test
 
+They are very simple tests on the two main and unique composables of the application, which are useCurrency.js, responsible for formatting prices into fiat format, and useDate, used for handling certain date conversions to display a common date string and convert values to a specific format required by CoinGecko.
 
+## E2E Test
 
 
 
