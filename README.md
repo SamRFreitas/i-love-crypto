@@ -84,6 +84,10 @@ They are very simple tests on the two main and unique composables of the applica
 
 One important thing in these tests is that due to the aforementioned limitation of CoinGecko, the CoinGecko calls were mocked. I particularly don't like to mock E2E tests, but since I have no control over the API and there was no way to run the tests, and there are many requests and only 1 test, it was necessary to implement mocks in these calls. These mocks simulate all possibilities of errors and successes, making the E2E test very comprehensive and assertive.
 
+## Deploy 
+
+**The last thing to mention is that GitHub Actions was implemented for CI/CD, where every time a push is made to the main branch, it triggers the actions. These actions include unit tests, E2E tests, and if they pass, it deploys to Vercel. This way, I only have to promote that deploy to production, ensuring a deployment with reliable updates and guaranteeing the quality of the project.**
+
 
 
 
