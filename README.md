@@ -4,13 +4,14 @@
 ![Playwright](https://img.shields.io/static/v1?style=for-the-badge&message=Playwright&color=2EAD33&logo=Playwright&logoColor=FFFFFF&label=)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+
 # i-love-crypto
 
-A Vue 3 application to display real-time cryptocurrency prices. This project leverages the CoinGecko API to fetch and display the latest prices.
+A Vue 3 application for displaying real-time cryptocurrency prices. This project utilizes the CoinGecko API to fetch and display the latest prices.
 
-## Table of Contents
+## Contents Summary
 
-- [Installation](#installation){:target="_blank"}
+- [Installation](#installation)
 - [Usage](#usage)
 - [Available Scripts](#available-scripts)
 - [Project Structure](#project-structure)
@@ -18,7 +19,7 @@ A Vue 3 application to display real-time cryptocurrency prices. This project lev
 - [License](#license)
 - [Contact](#contact)
 
-## First of All - Hw to install and build the application in the local environment
+## Installation
 
 Follow these steps to get a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -52,7 +53,7 @@ Follow these steps to get a copy of the project up and running on your local mac
    * ```sh
      npm run serve
      
-## External Libs
+## External Libraries
 
 1. [Headless UI](https://headlessui.com/v1/vue/disclosure)
 2. [Heroicons](https://vue-hero-icons.netlify.app/) 
@@ -61,52 +62,36 @@ Follow these steps to get a copy of the project up and running on your local mac
 
 ## Architecture Decisions
 
-1. Vue 3, since it's a simple and new project, I think it's important to use the most recent and current technologies for learning and understanding new types of solutions.
-2. About the project structure, it's very simple and intuitive. One thing worth mentioning is the architecture of services, which is located in the src/services directory and aggregates all the external services that the application consumes. In our case, it's very simple and only has CoinGecko, but if there was a need to implement and/or consume more APIs, it would be very simple to implement and use in the application.
-3. An important decision was the use of Vuex and localStorage due to CoinGecko's limited public API, which provides very few requests per minute. This created a major development challenge, and one solution was to use the store in conjunction with the browser localStorage. An example of this is that at the beginning of the application, it checks if it has the necessary coins before making requests, reducing the consumption of the CoinGecko API.
-4. Jest for unit tests because it is a very rich and complete library with a strong community
-5. Playwright for end-to-end tests.
+1. Vue 3 was chosen for its simplicity and new features, enabling us to use the most recent technologies for learning and exploring new solutions.
+2. The project structure is simple and intuitive, with a clear separation of concerns. The architecture of services, located in the src/services directory, aggregates all external services that the application consumes, making it easy to implement and use additional APIs.
+3. An important decision was the use of Vuex and localStorage due to CoinGecko's limited public API, which provides very few requests per minute. This created a major development challenge, and one solution was to use the store in conjunction with browser localStorage. For example, at the beginning of the application, it checks if it has the necessary coins before making requests, reducing the consumption of the CoinGecko API.
+4. Jest was chosen for unit tests because it is a very rich and complete library with a strong community.
+5. Playwright was chosen for end-to-end tests.
 
-## Unit Test 
+## Unit Tests
 
-**To run unit tests, you only need to run the command:**
+**To run unit tests, simply execute the following command:**
 
 * ```sh
      npm run test
 
-They are very simple tests on the two main and unique composables of the application, which are useCurrency.js, responsible for formatting prices into fiat format, and useDate, used for handling certain date conversions to display a common date string and convert values to a specific format required by CoinGecko.
+The unit tests are simple and focus on the two main and unique composables of the application: useCurrency.js, responsible for formatting prices into fiat format, and useDate, used for handling certain date conversions to display a common date string and convert values to a specific format required by CoinGecko.
 
-## E2E Test
+## E2E Tests
 
 **It's important to have the application running locally because the tests need to access the application's URL. If your local application is not running, the tests will not be executed.**
 
 * ```sh
-     npm run seve
+     npm run serve
 
-**To run the tests, you can execute the following command:**
+**To run the tests, use the following command:**
 
 * ```sh
      npx playwright test
 
-One important thing in these tests is that due to the aforementioned limitation of CoinGecko, the CoinGecko calls were mocked. I particularly don't like to mock E2E tests, but since I have no control over the API and there was no way to run the tests, and there are many requests and only 1 test, it was necessary to implement mocks in these calls. These mocks simulate all possibilities of errors and successes, making the E2E test very comprehensive and assertive.
+One important aspect of these tests is that due to the aforementioned limitation of CoinGecko, the CoinGecko calls were mocked. Although I prefer not to mock E2E tests, since I have no control over the API and there was no way to run the tests, and there are many requests and only 1 test, it was necessary to implement mocks in these calls. These mocks simulate all possibilities of errors and successes, making the E2E test very comprehensive and assertive.
 
-## Deploy 
+## Deployment 
 
-**The last thing to mention is that GitHub Actions was implemented for CI/CD, where every time a push is made to the main branch, it triggers the actions. These actions include unit tests, E2E tests, and if they pass, it deploys to Vercel. This way, I only have to promote that deploy to production, ensuring a deployment with reliable updates and guaranteeing the quality of the project.You can view the configuration of the jobs in the deploy.yml file inside the .github/workflows/deploy.yml directory.**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
+**The last thing to mention is that GitHub Actions was implemented for CI/CD. Every time a push is made to the main branch, it triggers the actions, including unit tests, E2E tests, and if they pass, it deploys to Vercel. This way, I only have to promote that deploy to production, ensuring a deployment with reliable updates and guaranteeing the quality of the project. You can view the configuration of the jobs in the deploy.yml file inside the .github/workflows/deploy.yml directory.**
 
