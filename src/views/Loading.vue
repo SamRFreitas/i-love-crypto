@@ -13,7 +13,7 @@ import Loader from '@/components/Loader.vue'
 const props = defineProps({
     onLoadingText: {
         type: String,
-        default: 'Carregando...',
+        default: 'Loading Cryptos...',
     },
 })
 </script>
