@@ -86,7 +86,7 @@ One important thing in these tests is that due to the aforementioned limitation 
 
 ## Deploy 
 
-**The last thing to mention is that GitHub Actions was implemented for CI/CD, where every time a push is made to the main branch, it triggers the actions. These actions include unit tests, E2E tests, and if they pass, it deploys to Vercel. This way, I only have to promote that deploy to production, ensuring a deployment with reliable updates and guaranteeing the quality of the project.**
+**The last thing to mention is that GitHub Actions was implemented for CI/CD, where every time a push is made to the main branch, it triggers the actions. These actions include unit tests, E2E tests, and if they pass, it deploys to Vercel. This way, I only have to promote that deploy to production, ensuring a deployment with reliable updates and guaranteeing the quality of the project.You can view the configuration of the jobs in the deploy.yml file inside the .github/workflows/deploy.yml directory.**
 
 
 
