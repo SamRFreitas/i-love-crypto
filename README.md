@@ -55,9 +55,18 @@ Follow these steps to get a copy of the project up and running on your local mac
 
 ## Architecture Decisions
 
-1. We use Vue 3, since it's a simple and new project, I think it's important to use the most recent and current technologies for learning and understanding new types of solutions.
+1. Vue 3, since it's a simple and new project, I think it's important to use the most recent and current technologies for learning and understanding new types of solutions.
 2. About the project structure, it's very simple and intuitive. One thing worth mentioning is the architecture of services, which is located in the src/services directory and aggregates all the external services that the application consumes. In our case, it's very simple and only has CoinGecko, but if there was a need to implement and/or consume more APIs, it would be very simple to implement and use in the application.
 3. An important decision was the use of Vuex and localStorage due to CoinGecko's limited public API, which provides very few requests per minute. This created a major development challenge, and one solution was to use the store in conjunction with the browser localStorage. An example of this is that at the beginning of the application, it checks if it has the necessary coins before making requests, reducing the consumption of the CoinGecko API.
+4. Jest for unit tests because it is a very rich and complete library with a strong community
+5. Playwright for end-to-end tests.
+
+
+
+
+
+
+
 
 
 
