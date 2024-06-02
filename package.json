@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "test": "vue-cli-service test:unit",
     "test:e2e": "npx playwright test --headed",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "action:test:e2e": "npm run serve & npx playwright test"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.22",
