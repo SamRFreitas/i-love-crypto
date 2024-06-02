@@ -61,6 +61,13 @@ Follow these steps to get a copy of the project up and running on your local mac
 4. Jest for unit tests because it is a very rich and complete library with a strong community
 5. Playwright for end-to-end tests.
 
+## Unit Test 
+
+**To run unit tests, you only need to run the command :**
+
+```sh
+npm run test
+
 
 
 
