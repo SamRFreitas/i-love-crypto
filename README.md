@@ -1,35 +1,22 @@
 # i-love-crypto
 
-## Project setup
+A Vue 3 application to display real-time cryptocurrency prices. This project leverages the CoinGecko API to fetch and display the latest prices.
 
-```
-npm install
-```
+## Table of Contents
 
-### Compiles and hot-reloads for development
+- [Installation](#installation)
+- [Usage](#usage)
+- [Available Scripts](#available-scripts)
+- [Project Structure](#project-structure)
+- [Contribution](#contribution)
+- [License](#license)
+- [Contact](#contact)
 
-```
-npm run serve
-```
+## Installation
 
-### Compiles and minifies for production
+Follow these steps to get a copy of the project up and running on your local machine for development and testing purposes.
 
-```
-npm run build
-```
-
-### Run your unit tests
-
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/your-username/i-love-crypto.git
+   cd i-love-crypto

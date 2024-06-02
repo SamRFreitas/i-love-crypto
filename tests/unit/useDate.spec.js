@@ -7,10 +7,6 @@ describe('UseDate - ', () => {
     const datetimeString = datetime.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' })
     const datetimeMock = new Date(datetimeString)
 
-    console.log(datetime)
-    console.log(datetimeString)
-    console.log(datetimeMock)
-
     it('range - should have the correct time interval of 1 hour in timestamps', () => {
         
         const { range } = useDate(datetimeMock)
