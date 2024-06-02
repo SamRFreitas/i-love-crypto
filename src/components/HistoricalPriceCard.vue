@@ -4,7 +4,7 @@
 
         <div class="flex flex-row justify-between w-full">
             <label class="block text-md font-medium leading-6 text-gray-900"> {{ props.historicalData.coin.name }} Price: </label>
-            <label class="block text-md font-medium leading-6 text-gray-900"> {{ props.historicalData.price }} </label>
+            <label id="historical-coin-price" class="block text-md font-medium leading-6 text-gray-900"> {{ props.historicalData.price }} </label>
         </div>
 
         <div class="flex flex-row justify-between w-full">
