@@ -47,8 +47,7 @@ Follow these steps to get a copy of the project up and running on your local mac
      npm run serve
      
 ## External Libs
-
-Follow these steps to get a copy of the project up and running on your local machine for development and testing purposes.
+[headless](https://headlessui.com/v1/vue/disclosure){:target="_blank"}
 
 
  
