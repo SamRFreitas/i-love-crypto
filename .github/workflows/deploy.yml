@@ -27,7 +27,7 @@ jobs:
         run: npm run test
       - run: echo "Tests finished!"
 
-    test-e2d:
+  test-e2d:
     name: Test E2E
     runs-on: ubuntu-latest
     steps:
