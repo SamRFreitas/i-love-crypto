@@ -9,16 +9,6 @@
 
 A Vue 3 application for displaying real-time cryptocurrency prices. This project utilizes the CoinGecko API to fetch and display the latest prices.
 
-## Contents Summary
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Available Scripts](#available-scripts)
-- [Project Structure](#project-structure)
-- [Contribution](#contribution)
-- [License](#license)
-- [Contact](#contact)
-
 ## Installation
 
 Follow these steps to get a copy of the project up and running on your local machine for development and testing purposes.
