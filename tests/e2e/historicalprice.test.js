@@ -48,16 +48,34 @@ async function setupMockFetchSimplePrice(page) {
 
 }
 
-async function setupMockFetchHistoricalDataWithTimeRange(page, withErrorMessage = true) {
+async function setupMockFetchHistoricalDataWithTimeRange(page, error = '') {
   
   await page.route('**/market_chart/range**', (route) => {
-    if (withErrorMessage) {
+
+    if (error == 'Too Many Requests') {
+
       route.fulfill({
         status: 429,
         contentType: 'application/json',
         body: JSON.stringify({ error: 'Too Many Requests' }),
       })
-    } else {
+
+    }    
+    
+    if (error == 'Empty Prices'){
+
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          prices: [],
+        }),
+      })
+
+    }
+
+    if (error == '') {
+
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -65,7 +83,9 @@ async function setupMockFetchHistoricalDataWithTimeRange(page, withErrorMessage 
           prices: [[1, 1000]],
         }),
       })
+
     }
+
   })
 
 }
@@ -120,7 +140,7 @@ test('should show error Too Many Request', async ({ page }) => {
 
   setupMockFetchCoinList(page)
   setupMockFetchSimplePrice(page)
-  setupMockFetchHistoricalDataWithTimeRange(page)
+  setupMockFetchHistoricalDataWithTimeRange(page, 'Too Many Requests')
 
   await page.goto(BASE_URL)
 
@@ -134,11 +154,31 @@ test('should show error Too Many Request', async ({ page }) => {
 
 })
 
-test('should see a historicalPrice', async ({ page }) => {
+test('should show error Empty Prices', async ({ page }) => {
 
   setupMockFetchCoinList(page)
   setupMockFetchSimplePrice(page)
-  setupMockFetchHistoricalDataWithTimeRange(page, false)
+  setupMockFetchHistoricalDataWithTimeRange(page, 'Empty Prices')
+
+  await page.goto(BASE_URL)
+
+  await selectDate(page)
+
+  await page.waitForTimeout(2000)
+
+  await page.click('button[type="submit"]')
+
+  await page.waitForSelector('text=Empty Prices - The chosen date does not have available prices. Please select dates before today for past days.', { timeout: 1000 })
+
+  await page.waitForTimeout(2000)
+
+})
+
+test('should see a historical price', async ({ page }) => {
+
+  setupMockFetchCoinList(page)
+  setupMockFetchSimplePrice(page)
+  setupMockFetchHistoricalDataWithTimeRange(page)
 
   await page.goto(BASE_URL)
 
