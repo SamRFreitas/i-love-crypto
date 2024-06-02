@@ -47,7 +47,11 @@ Follow these steps to get a copy of the project up and running on your local mac
      npm run serve
      
 ## External Libs
-[headless](https://headlessui.com/v1/vue/disclosure){:target="_blank"}
+
+1. [Headless UI](https://headlessui.com/v1/vue/disclosure)
+2. [Heroicons](https://vue-hero-icons.netlify.app/) 
+3. [Axios](https://axios-http.com/)
+4. [Vue Datepicker](https://vue3datepicker.com/)
 
 
  
